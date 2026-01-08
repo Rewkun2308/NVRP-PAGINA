@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Store | Premium Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Rajdhani:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --neon-purple: #a855f7;
+            --neon-blue: #06b6d4;
+            --bg-white: #ffffff;
+            --card-bg: #f8fafc;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-white); 
+            color: #1e293b;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.03) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.03) 0%, transparent 20%);
+        }
+
+        .font-title { font-family: 'Rajdhani', sans-serif; }
+
+        /* Efecto Neón sobre Blanco */
+        .neon-border {
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .neon-border:hover {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.15), inset 0 0 10px rgba(168, 85, 247, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .neon-text-purple {
+            color: var(--neon-purple);
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-premium {
+            background: #1e293b;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-premium:hover {
+            background: var(--neon-purple);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+            transform: scale(1.02);
+        }
+
+        .category-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active {
+            border-color: var(--neon-purple);
+            color: var(--neon-purple);
+            background: rgba(168, 85, 247, 0.05);
+            font-weight: 800;
+        }
+
+        .price-tag {
+            background: rgba(168, 85, 247, 0.1);
+            color: var(--neon-purple);
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-weight: 800;
+        }
+
+        /* Animación suave para la carga de productos */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .product-card { animation: fadeIn 0.5s ease forwards; }
+    </style>
+</head>
+<body>
+
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100">
+        <div class="container mx-auto px-6 h-20 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 bg-gradient-to-tr from-purple-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-6 transition">
+                    <i class="fas fa-shopping-bag text-white"></i>
+                </div>
+                <span class="font-title text-2xl font-bold tracking-tighter text-slate-800">NOVA<span class="neon-text-purple">STORE</span></span>
+            </a>
+            
+            <div class="flex items-center space-x-4">
+                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Pagos Seguros</span>
+                <div class="flex space-x-2 text-slate-300">
+                    <i class="fab fa-cc-paypal text-xl hover:text-blue-500 transition"></i>
+                    <i class="fab fa-cc-visa text-xl hover:text-blue-400 transition"></i>
+                    <i class="fab fa-cc-mastercard text-xl hover:text-red-400 transition"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="container mx-auto px-6 py-16 text-center">
+        <h1 class="text-5xl md:text-7xl font-extrabold font-title mb-4 text-slate-900 uppercase">Tienda <span class="neon-text-purple">Oficial</span></h1>
+        <p class="text-slate-500 max-w-2xl mx-auto text-sm font-medium tracking-wide">
+            Adquiere beneficios exclusivos para potenciar tu aventura. Todos los fondos son destinados al mantenimiento del servidor.
+        </p>
+    </header>
+
+    <section class="container mx-auto px-6 mb-16">
+        <div class="flex flex-wrap justify-center gap-3" id="category-container">
+            </div>
+    </section>
+
+    <main class="container mx-auto px-6 pb-32">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10" id="shop-grid">
+            </div>
+    </main>
+
+    <script>
+        // CONFIGURACIÓN DE PRODUCTOS (DINERO REAL)
+        const CONFIG = {
+            categories: ["Todos", "VIP", "Moneda IC", "Vehículos", "Unbans"],
+            products: [
+                {
+                    id: 1,
+                    nombre: "Suscripción VIP Diamond",
+                    categoria: "VIP",
+                    precio: "14.99",
+                    moneda: "USD",
+                    imagen: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=500&q=80",
+                    desc: "Acceso a helipuertos, 3 vehículos extra y tag exclusivo en chat."
+                },
+                {
+                    id: 2,
+                    nombre: "Pack 1.000.000$ IC",
+                    categoria: "Moneda IC",
+                    precio: "9.50",
+                    moneda: "USD",
+                    imagen: "https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?auto=format&fit=crop&w=500&q=80",
+                    desc: "Dinero directo a tu cuenta bancaria dentro del servidor."
+                },
+                {
+                    id: 3,
+                    nombre: "Supercar: Bullet Nova",
+                    categoria: "Vehículos",
+                    precio: "25.00",
+                    moneda: "USD",
+                    imagen: "https://images.unsplash.com/photo-1605733513597-a8f8341084e6?auto=format&fit=crop&w=500&q=80",
+                    desc: "Vehículo único con manejo mejorado y neones personalizados."
+                },
+                {
+                    id: 4,
+                    nombre: "Unban de Cuenta",
+                    categoria: "Unbans",
+                    precio: "5.00",
+                    moneda: "USD",
+                    imagen: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80",
+                    desc: "Segunda oportunidad. Solo aplica para sanciones leves."
+                }
+            ]
+        };
+
+        function renderCategories() {
+            const container = document.getElementById('category-container');
+            container.innerHTML = CONFIG.categories.map(cat => `
+                <button onclick="filterProducts('${cat}')" class="category-btn px-6 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest shadow-sm">
+                    ${cat}
+                </button>
+            `).join('');
+            document.querySelector('.category-btn').classList.add('active');
+        }
+
+        function renderProducts(filter = "Todos") {
+            const grid = document.getElementById('shop-grid');
+            const filtered = filter === "Todos" 
+                ? CONFIG.products 
+                : CONFIG.products.filter(p => p.categoria === filter);
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="product-card neon-border bg-white rounded-3xl overflow-hidden flex flex-col p-2">
+                    <div class="h-56 rounded-2xl overflow-hidden relative">
+                        <img src="${p.imagen}" class="w-full h-full object-cover" alt="${p.nombre}">
+                        <div class="absolute top-4 left-4">
+                            <span class="price-tag text-xs italic shadow-sm bg-white/90 backdrop-blur-md">
+                                ${p.precio} ${p.moneda}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">${p.categoria}</span>
+                        <h3 class="text-lg font-bold text-slate-800 mb-3 leading-tight">${p.nombre}</h3>
+                        <p class="text-slate-500 text-xs leading-relaxed mb-8 flex-grow">${p.desc}</p>
+                        
+                        <button onclick="checkout(${p.id})" class="btn-premium w-full py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center space-x-2">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Comprar Ahora</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts(cat) {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.trim() === cat.toUpperCase()) btn.classList.add('active');
+            });
+            renderProducts(cat);
+        }
+
+        function checkout(id) {
+            const p = CONFIG.products.find(prod => prod.id === id);
+            alert(`Redirigiendo a pasarela de pago segura...\nProducto: ${p.nombre}\nTotal: ${p.precio} ${p.moneda}`);
+        }
+
+        window.onload = () => {
+            renderCategories();
+            renderProducts();
+        };
+    </script>
+</body>
+</html>
